@@ -43,13 +43,13 @@ class ScikitSVM:
     def get_tags(self, test_file, output_file):
         new_csv = open(output_file, 'w')
         writer = csv.writer(new_csv, delimiter=',', quotechar='"')
-        writer.writerow(['Id', 'Tags'])
         test_matrix = self.sf.get_file_text(test_file)
         predicted_labels = self.classifier.predict(test_matrix)
         predicted_label_names = [self.sf.get_labels_from_id(label_ids) for label_ids in predicted_labels]
         ids = self.sf.get_file_ids(test_file)
         for i,id in enumerate(ids):
-            writer.writerow([id, " ".join(predicted_label_names[i])])
+            tags = " ".join(predicted_label_names[i])
+            writer.writerow([id, tags])
         new_csv.close()
 
 if __name__ == "__main__":
