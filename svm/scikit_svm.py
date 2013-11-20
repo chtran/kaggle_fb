@@ -41,6 +41,7 @@ class ScikitSVM:
         print "Score: %f" % (2*p*r/(p+r))
 
     def get_tags(self, test_file, output_file):
+        print "Getting tags for "+test_file
         new_csv = open(output_file, 'w')
         writer = csv.writer(new_csv, delimiter=',', quotechar='"')
         test_matrix = self.sf.get_file_text(test_file)
@@ -51,6 +52,7 @@ class ScikitSVM:
             tags = " ".join(predicted_label_names[i])
             writer.writerow([id, tags])
         new_csv.close()
+        print "Done."
 
 if __name__ == "__main__":
     command = sys.argv[1]
