@@ -4,12 +4,13 @@ from sklearn.svm import LinearSVC
 import sys
 import pickle
 import csv
+import numpy as np
 
 class ScikitSVM:
     def __init__(self, train_file, tags_file, tag_start, tag_end):
         self.sf = ScikitFeature(train_file, tags_file, tag_start, tag_end)
         print "done getting features"
-        self.classifier = OneVsRestClassifier(LinearSVC(random_state=0), n_jobs=1)
+        self.classifier = OneVsRestClassifier(LinearSVC(C=4,random_state=0), n_jobs=1)
         self.classifier.fit(self.sf.training_text, self.sf.training_labels_tuple)
         print "done fitting"
 
@@ -27,18 +28,27 @@ class ScikitSVM:
         N_true_tags = 0.0
         N_predict_tags = 0.0
         N_correct = 0.0
+        F1 = []
         for i in range(N_question):
             N_true_tags += len(true_labels[i])
             N_predict_tags += len(predicted_labels[i])
+            this_correct = 0.
             for predict_label_id in predicted_labels[i]:
                 if (predict_label_id in true_labels[i]):
-                    N_correct += 1
+                    this_correct += 1
+            N_correct += this_correct
+            if this_correct == 0:
+                F1.append(0)
+            else:
+                p = this_correct / len(predicted_labels[i])
+                r = this_correct / len(true_labels[i])
+                F1.append(2*p*r/(p+r))
         print N_correct,N_predict_tags,N_true_tags
         p= N_correct / N_predict_tags
         r= N_correct / N_true_tags
         print "Precision: %f %%" % (p*100)
         print "Recall: %f %%" % (r*100)
-        print "Score: %f" % (2*p*r/(p+r))
+        print "Mean F1: %f" % (np.average(F1))
 
     def get_tags(self, test_file, output_file):
         print "Getting tags for "+test_file
