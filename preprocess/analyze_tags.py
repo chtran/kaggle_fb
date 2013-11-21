@@ -22,6 +22,6 @@ for row in reader:
     for q_tag in q_tags:
         if q_tag in tags:
             found += 1
-            continue
+            break
 
 print "Questions with tag found: ",found
