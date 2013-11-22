@@ -10,7 +10,7 @@ class ScikitSVM:
     def __init__(self, train_file, tags_file, tag_start, tag_end):
         self.sf = ScikitFeature(train_file, tags_file, tag_start, tag_end)
         print "done getting features"
-        self.classifier = OneVsRestClassifier(LinearSVC(C=4,random_state=0), n_jobs=1)
+        self.classifier = OneVsRestClassifier(LinearSVC(C=10,random_state=0), n_jobs=1)
         self.classifier.fit(self.sf.training_text, self.sf.training_labels_tuple)
         print "done fitting"
 
