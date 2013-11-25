@@ -16,14 +16,15 @@ class ScikitFeature:
         text_data = []
         label_data = []
         for row in json_output["data"]:
-            text_data.append(row["text"])
+            row_text = row["text"]+" "+row["title"]
+            text_data.append(row_text)
             row_tags = filter(lambda t: t in self.tags, row["tags"])
             label_data.append(row_tags)
         print "Loaded label and text data"
         # Process text data
         #self.count_vectorizer = CountVectorizer(max_features=max_features, stop_words='english')
         #sparse_matrix = self.count_vectorizer.fit_transform(text_data)
-        self.tfidf = TfidfVectorizer(max_features=max_features, stop_words="english", norm="l2")
+        self.tfidf = TfidfVectorizer(max_features=max_features, stop_words="english", norm="l2", binary=True)
         self.training_text = self.tfidf.fit_transform(text_data)
         #self.training_text = self.tfidf.transform(sparse_matrix)
         print "Computed text features"
@@ -52,7 +53,7 @@ class ScikitFeature:
     def get_file_text(self, filename):
         f = open(filename)
         json_output = json.load(f)
-        text_data = [row["text"] for row in json_output["data"]]
+        text_data = [row["text"]+" "+row["title"] for row in json_output["data"]]
         text_matrix = self.tfidf.transform(text_data)
         return text_matrix
 
