@@ -1,4 +1,7 @@
 *.pyc
+utils/*.pyc
+svm/*.pyc
+feature_selection/*.pyc
 results
 svm/scikit_svm.dat
 chtran-ds.pem
