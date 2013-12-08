@@ -1,4 +1,6 @@
 *.pyc
+utils/*.pyc
+svm/*.pyc
 results
 svm/scikit_svm.dat
 chtran-ds.pem
