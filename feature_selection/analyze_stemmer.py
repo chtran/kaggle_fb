@@ -7,9 +7,8 @@ filename = sys.argv[1]
 tag_filename = sys.argv[2]
 
 
-sf = ScikitFeature(filename, tag_filename, max_features=10000, tokenizer=None)
+sf = ScikitFeature(filename, tag_filename, max_features=10000)
 ls = PorterStemmer()
-origin_vocab = sf.tfidf.vocabulary_.keys()
-stemmed_vocab = list(set(map(ls.stem, origin_vocab)))
+vocab = sf.tfidf.vocabulary_.keys()
 
-print "Reduced from",len(origin_vocab),"to",len(stemmed_vocab)
+print json.dumps(sorted(vocab))
