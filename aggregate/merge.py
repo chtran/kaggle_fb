@@ -1,6 +1,6 @@
 import csv
 dic={}
-n=10
+n=20
 for i in range(n):
     filename = "data/"+str(i*100)+"_"+str(i*100+100)+".csv"
     csv_file = open(filename)

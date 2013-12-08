@@ -1,3 +1,4 @@
+from nltk.stem.porter import PorterStemmer
 from tagger.utils.scikit_feature import ScikitFeature
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.svm import LinearSVC
@@ -10,7 +11,7 @@ class ScikitSVM:
     def __init__(self, train_file, tags_file, tag_start, tag_end):
         self.sf = ScikitFeature(train_file, tags_file, tag_start, tag_end, max_features=10000)
         print "done getting features"
-        self.classifier = OneVsRestClassifier(LinearSVC(C=16,random_state=0), n_jobs=1)
+        self.classifier = OneVsRestClassifier(LinearSVC(C=32,random_state=0), n_jobs=1)
         self.classifier.fit(self.sf.training_text, self.sf.training_labels_tuple)
         print "done fitting"
 

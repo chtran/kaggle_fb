@@ -2,11 +2,13 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import LabelBinarizer
+from tagger.feature_selection.lancaster_tokenizer import LancasterTokenizer
+from tagger.feature_selection.porter_tokenizer import PorterTokenizer
 import json
 
 class ScikitFeature:
 
-    def __init__(self, filename, tags_filename, tag_start=0, tag_end=100, max_features=5000):
+    def __init__(self, filename, tags_filename, tag_start=0, tag_end=100, max_features=5000, tokenizer=PorterTokenizer()):
         f = open(filename)
         json_output = json.load(f)
         tag_f = open(tags_filename)
@@ -24,7 +26,7 @@ class ScikitFeature:
         # Process text data
         #self.count_vectorizer = CountVectorizer(max_features=max_features, stop_words='english')
         #sparse_matrix = self.count_vectorizer.fit_transform(text_data)
-        self.tfidf = TfidfVectorizer(max_features=max_features, stop_words="english", norm="l2", binary=True)
+        self.tfidf = TfidfVectorizer(max_features=max_features, stop_words="english", norm="l2", binary=True, tokenizer=tokenizer)
         self.training_text = self.tfidf.fit_transform(text_data)
         #self.training_text = self.tfidf.transform(sparse_matrix)
         print "Computed text features"
