@@ -1,4 +1,9 @@
 from sklearn.naive_bayes import MultinomialNB
+from tagger.utils.scikit_feature import ScikitFeature
+import sys
+import pickle
+import csv
+import numpy as np
 
 from tagger.utils.scikit_feature import ScikitFeature
 
@@ -18,6 +23,7 @@ class ScikitNB:
     def test(self, test_file):
         test_matrix = self.sf.get_file_text(test_file)
         predicted_labels = self.classifier.predict(test_matrix)
+        print predicted_labels
         predicted_label_names = [self.sf.get_labels_from_id(label_ids) for label_ids in predicted_labels]
         true_labels = self.sf.get_file_labels(test_file)
         N_question = len(predicted_labels)
@@ -71,7 +77,7 @@ if __name__ == "__main__":
         if (len(sys.argv)>4):
             tag_start = int(sys.argv[4])
             tag_end = int(sys.argv[5])
-        nb = Scikitnb(input_file, tags_file, tag_start, tag_end)
+        nb = ScikitNB(input_file, tags_file, tag_start, tag_end)
         with open('scikit_nb.dat', 'wb') as output:
             pickle.dump(nb, output, pickle.HIGHEST_PROTOCOL)
     elif command == "test":
